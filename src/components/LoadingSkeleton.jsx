@@ -1,19 +1,14 @@
 
-
+import dropdownIcon from '../../assets/images/icon-dropdown.svg';
 export default function WeatherSkeleton() {
-  const details = [
-    { label: "Feels Like" },
-    { label: "Humidity" },
-    { label: "Wind" },
-    { label: "Precipitation" },
-  ];
+  const details = ["Feels Like", "Humidity", "Wind", "Precipitation"];
 
   return (
-    <main className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 max-w-5xl mx-auto mt-6">
+    <main className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 max-w-6xl mx-auto">
       {/* Left Column */}
       <div className="flex flex-col gap-6">
         {/* 1. Main Current Weather Banner */}
-        <div className="bg-neutral-800/60 h-64 rounded-3xl flex flex-col items-center justify-center gap-3 border border-neutral-700/30">
+        <div className="bg-neutral-800/60 h-72 rounded-3xl flex flex-col items-center justify-center gap-3 border border-neutral-700/30">
           <div className="flex gap-2">
             <div className="w-3 h-3 bg-neutral-500 rounded-full animate-bounce"></div>
             <div className="w-3 h-3 bg-neutral-500 rounded-full animate-bounce [animation-delay:-.2s]"></div>
@@ -24,12 +19,12 @@ export default function WeatherSkeleton() {
 
         {/* 2. Weather Details */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {details.map((item, idx) => (
+          {details.map((label) => (
             <div
-              key={idx}
-              className="bg-neutral-800/60 h-24 rounded-2xl p-4 flex flex-col justify-between border border-neutral-700/30"
+              key={label}
+              className="bg-neutral-800/60 h-28 rounded-2xl p-4 flex flex-col justify-between border border-neutral-700/30"
             >
-              <span className="text-neutral-200 text-sm font-medium">{item.label}</span>
+              <span className="text-neutral-200 text-sm font-medium">{label}</span>
               <span className="text-neutral-400 text-2xl leading-none">—</span>
             </div>
           ))}
@@ -53,11 +48,9 @@ export default function WeatherSkeleton() {
       <div className="w-full lg:w-90 bg-neutral-800/60 rounded-3xl p-6 border border-neutral-700/30 flex flex-col gap-3">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-neutral-0 text-lg font-semibold">Hourly forecast</h2>
-          <div className="flex items-center gap-1 bg-neutral-700/40 text-neutral-300 text-sm px-3 py-1.5 rounded-lg">
+          <div className="flex items-center gap-1 bg-neutral-700 text-neutral-300 text-sm px-3 py-1.5 rounded-lg">
             <span>—</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+           <img src={dropdownIcon} alt='dropdownIcon'></img>
           </div>
         </div>
 
@@ -65,7 +58,7 @@ export default function WeatherSkeleton() {
         {[...Array(8)].map((_, idx) => (
           <div
             key={idx}
-            className="bg-neutral-700/20 border border-neutral-700/40 h-12 rounded-xl w-full"
+            className="bg-neutral-700/20 border border-neutral-700/40 h-14 rounded-xl w-full"
           ></div>
         ))}
       </div>

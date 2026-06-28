@@ -20,15 +20,16 @@ export default function Header() {
   
 
   return (
-    <header className="flex justify-between items-center py-6">
+    <header className="flex justify-between items-center py-6 mt-6 mb-10">
       <div className="flex items-center gap-3">
-        <img src={Logo} alt="logo"></img>
+        <img className='w-40 md:w-full' src={Logo} alt="logo"></img>
       </div>
 
       <div className="relative">
         <button 
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          onBlur={ () => setTimeout(() => setIsDropdownOpen(false), 200)}
+          className="focus:outline-none focus:ring-2 focus:ring-neutral-0 cursor-pointer flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 px-2 py-1 md:px-4 md:py-2 rounded-lg text-sm font-medium transition-colors"
         >
           <img src={settingsIcon} alt='settings icon'/> Units <img src={dropdownIcon} alt='settings icon'/>
         </button>
@@ -39,7 +40,7 @@ export default function Header() {
               <button disabled={!fallBack && !test} onClick={() => {
                 toggleMetric()
                 setIsDropdownOpen(false)
-              }} className="p-2 w-full text-left outline-none focus-within:ring focus-within:ring-neutral-0 focus-within:rounded-md text-neutral-0 font-medium cursor-pointer disabled:cursor-not-allowed">{fallBack && !test ? 'Switch to Imperial' : 'Switch to Metric'}</button>
+              }} className="p-2 w-full hover:bg-neutral-700 text-left outline-none focus-within:ring  text-neutral-0 font-medium cursor-pointer disabled:cursor-not-allowed rounded-md">{fallBack && !test ? 'Switch to Imperial' : 'Switch to Metric'}</button>
               
               <div className="space-y-3">
                 <div>

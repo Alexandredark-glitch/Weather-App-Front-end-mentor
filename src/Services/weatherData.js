@@ -1,9 +1,9 @@
-export const getWeather = async (query, isSelectedDegree, isSelectedWind, isSelectedPrecipitation) => {
+export const getWeather = async (query, isSelectedDegree, isSelectedWind, isSelectedPrecipitation, signal) => {
   try {
     const cleanQuery = query.trim();
 
     const geoRes = await fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQuery)}&count=1`
+      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQuery)}&count=1`, { signal }
     );
     if (!geoRes.ok) throw new Error("Failed to reach the location service");
 
@@ -23,7 +23,7 @@ export const getWeather = async (query, isSelectedDegree, isSelectedWind, isSele
       `&timezone=auto` +
       `&temperature_unit=${isSelectedDegree ? "celsius" : "fahrenheit"}` +
       `&wind_speed_unit=${isSelectedWind ? "kmh" : "mph"}` +
-      `&precipitation_unit=${isSelectedPrecipitation ? "mm" : "inch"}`
+      `&precipitation_unit=${isSelectedPrecipitation ? "mm" : "inch"}`, { signal }
     );
     if (!weatherRes.ok) throw new Error("Failed to fetch weather data");
 

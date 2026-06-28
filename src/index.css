@@ -48,7 +48,7 @@ img {
   height: auto;
 }
 
-@media screen and (min-width: 0px) and (max-width: 480px) {
+@media screen and (min-width: 0px) and (max-width: 700px) {
   .my-bg {
   background: url(../assets/images/bg-today-small.svg);
   background-repeat: no-repeat;

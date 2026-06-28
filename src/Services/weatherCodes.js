@@ -11,7 +11,6 @@ import PartlyCloudy from "../../assets/images/icon-partly-cloudy.webp";
 export const getWeatherIcon = (code) => {
   switch (code) {
     case 0:
-      return Sunny;
     case 1:
       return Sunny;
     case 2:
@@ -48,6 +47,6 @@ export const getWeatherIcon = (code) => {
     case 99:
       return Storm;
     default:
-      return PartlyCloudy; // Safe fallback
+      return PartlyCloudy; 
   }
 };

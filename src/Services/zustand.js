@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 const useSelectedUnitsStore = create((set) => ({
-    isSelectedDegree: true,
-    isSelectedWind: true,
-    isSelectedPrecipitation: true,
+    isSelectedDegree: true, //true = celcius, false = fahrenheit
+    isSelectedWind: true, //true = kmh, false = mph
+    isSelectedPrecipitation: true, //true = mm, false = inches
 
     isMetric: true,
 

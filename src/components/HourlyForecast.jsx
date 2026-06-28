@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react';
-import {getWeatherIcon} from "../Services/weatherCodes"
+import { getWeatherIcon } from "../Services/weatherCodes"
+import dropdownIcon from '../../assets/images/icon-dropdown.svg';
 
-export default function HourlyForecast({foreCast, today}) {
+export default function HourlyForecast({ForeCast, Today}) {
   const [isDaySelectOpen, setIsDaySelectOpen] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(today);
+  const [selectedDay, setSelectedDay] = useState(Today);
 
    // Object { 
 // date: "2026-06-26", hours: 0, label: "12 PM", … }
@@ -17,16 +18,16 @@ export default function HourlyForecast({foreCast, today}) {
   };
 
   const availableDays = useMemo(() => {
-    const days = foreCast.map(item => getDayName(item.date));
+    const days = ForeCast.map(item => getDayName(item.date));
     return [...new Set(days)]; // Removes duplicates
-  }, [foreCast]);
+  }, [ForeCast]);
   
    const displayData = useMemo(() => {
-    let filtered = foreCast.filter(item => getDayName(item.date) === selectedDay);
+    let filtered = ForeCast.filter(item => getDayName(item.date) === selectedDay);
 
     filtered = filtered.filter(item => item.hours >= 15 && item.hours <= 22);
     return filtered;
-   }, [foreCast, selectedDay]);
+   }, [ForeCast, selectedDay]);
 
   return (
     <div className="bg-[#25253f] rounded-xl p-4  flex flex-col justify-between">
@@ -39,10 +40,10 @@ export default function HourlyForecast({foreCast, today}) {
           {/* Menu Trigger Button */}
           <button 
             onClick={() => setIsDaySelectOpen(prev => !prev)}
-            className="flex items-center gap-2 bg-[#3C3B5C] text-sm font-semibold px-4 py-1 rounded-lg border border-neutral-600/40 transition-colors text-neutral-200"
+            className="flex cursor-pointer items-center gap-2 bg-[#3C3B5C] text-sm font-semibold px-4 py-1 rounded-lg border border-neutral-600/40 transition-colors text-neutral-200"
           >
             <span>{selectedDay}</span>
-            <span className=" text-neutral-300">A+</span>
+            <img src={dropdownIcon} alt="dropdown icon"/>
           </button>
 
           {/* Floating Dropdown Menu */}
@@ -68,11 +69,11 @@ export default function HourlyForecast({foreCast, today}) {
       </div>
 
       {/* Hourly List with Individual Capsule Rows */}
-      <div className="space-y-3 p-2 flex flex-col justify-between">
+      <div className="flex flex-col gap-3">
         {displayData.map((item, idx) => (
           <div 
             key={idx} 
-            className="flex border border-neutral-600 items-center justify-between px-4 py-4 bg-[#2F2F49] rounded-lg transition-all hover:bg-neutral-700/40"
+            className="flex border border-neutral-600 items-center justify-between px-2 py-[0.90625rem] bg-[#2F2F49] rounded-lg transition-all hover:bg-neutral-700/40"
           >
             <div className="flex items-center gap-4">
              <img className="w-8 h-8" src={getWeatherIcon(item.code)} alt="weather icon"/>
