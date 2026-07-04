@@ -1,4 +1,4 @@
-export const getWeather = async (query, isSelectedDegree, isSelectedWind, isSelectedPrecipitation, signal) => {
+export const getWeather = async (query, isMetric, signal) => {
   try {
     const cleanQuery = query.trim();
 
@@ -21,9 +21,9 @@ export const getWeather = async (query, isSelectedDegree, isSelectedWind, isSele
       `&hourly=temperature_2m,weather_code` +
       `&daily=weather_code,temperature_2m_max,temperature_2m_min` +
       `&timezone=auto` +
-      `&temperature_unit=${isSelectedDegree ? "celsius" : "fahrenheit"}` +
-      `&wind_speed_unit=${isSelectedWind ? "kmh" : "mph"}` +
-      `&precipitation_unit=${isSelectedPrecipitation ? "mm" : "inch"}`, { signal }
+      `&temperature_unit=${isMetric ? "celsius" : "fahrenheit"}` +
+      `&wind_speed_unit=${isMetric ? "kmh" : "mph"}` +
+      `&precipitation_unit=${isMetric ? "mm" : "inch"}`, { signal }
     );
     if (!weatherRes.ok) throw new Error("Failed to fetch weather data");
 

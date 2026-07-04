@@ -4,11 +4,11 @@ import CurrentWeather from "./components/CurrentWeather";
 import WeatherDetails from "./components/WeatherDetails";
 import DailyForecast from "./components/DailyForecast";
 import HourlyForecast from "./components/HourlyForecast";
-import ApiError from "./components/ApiError"
+import ApiError from "./components/ApiError";
 
-import WeatherSkeleton from "./components/LoadingSkeleton"; 
+import WeatherSkeleton from "./components/LoadingSkeleton";
 import { useState, useEffect, useMemo } from "react";
-import { getWeather } from "./Services/weatherData";
+import { getWeather } from "./Store/weatherData";
 import useSelectedUnitsStore from "./Services/zustand";
 
 const NETWORK_ERROR_MSG = "Network error — please check your connection";
@@ -23,7 +23,9 @@ const formatFullDate = (date) =>
   });
 
 const formatShortDay = (dateStr) =>
-  new Date(dateStr + "T00:00").toLocaleDateString("en-US", { weekday: "short" })
+  new Date(dateStr + "T00:00").toLocaleDateString("en-US", {
+    weekday: "short",
+  });
 
 function App() {
   const [special, setSpecial] = useState(0);
@@ -33,27 +35,29 @@ function App() {
   const [data, setData] = useState(null);
   const [currentInputText, setCurrentText] = useState("");
 
-  const { isSelectedDegree, isSelectedWind, isSelectedPrecipitation } = useSelectedUnitsStore(); // Thanks to Zustand
+  const { isMetric } = useSelectedUnitsStore(); // Thanks to Zustand
 
   const today = useMemo(() => new Date(), []);
   const formattedDate = useMemo(() => formatFullDate(today), [today]);
- 
 
   useEffect(() => {
     const controller = new AbortController();
-    let ignore = false;   // used to prevent state updates after unmount
+    let ignore = false; // used to prevent state updates after unmount
     const firstWeather = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const weatherData = await getWeather(activeCity, isSelectedDegree, isSelectedWind, isSelectedPrecipitation, controller.signal);
-        if(!ignore) setData(weatherData);
+        const weatherData = await getWeather(
+          activeCity,
+          isMetric,
+          controller.signal,
+        );
+        if (!ignore) setData(weatherData);
       } catch (error) {
-         if (error.name === 'AbortError') return;
+        if (error.name === "AbortError") return;
         if (!ignore) setError(error?.message || "An unexpected error occurred");
-
       } finally {
-        if(!ignore) setIsLoading(false);
+        if (!ignore) setIsLoading(false);
       }
     };
 
@@ -62,8 +66,8 @@ function App() {
     return () => {
       ignore = true;
       controller.abort();
-    }
-  }, [activeCity, isSelectedDegree, isSelectedWind, isSelectedPrecipitation, special]);
+    };
+  }, [activeCity, isMetric, special]);
 
   const handleSearch = (e) => {
     if (e) e.preventDefault();
@@ -74,8 +78,8 @@ function App() {
   };
 
   // Safe mapping guards and Memoized
-  
-    const daily = useMemo(() => {
+
+  const daily = useMemo(() => {
     if (!data?.daily?.time) return [];
     return data.daily.time.map((dateStr, i) => ({
       day: formatShortDay(dateStr),
@@ -85,62 +89,62 @@ function App() {
     }));
   }, [data]);
 
-  const hourly =
-    useMemo(() => {
-      if (!data?.hourly?.time) return [];
+  const hourly = useMemo(() => {
+    if (!data?.hourly?.time) return [];
     return data.hourly.time.map((time, i) => {
-         
-    const [date, hour] = time.split("T");
-    const hours = Number(hour.split(":")[0]);
-    const h12 = hours % 12 || 12;
-    const ampm = hour < 12 ? "AM" : "PM";
-    return {
-      date,
-      hours,
-      label: `${h12} ${ampm}`,
-      temp: Math.round(data.hourly.temperature_2m[i]),
-      code: data.hourly.weather_code[i],
-    };
-   });
+      const [date, hour] = time.split("T");
+      const hours = Number(hour.split(":")[0]);
+      const h12 = hours % 12 || 12;
+      const ampm = hour < 12 ? "AM" : "PM";
+      return {
+        date,
+        hours,
+        label: `${h12} ${ampm}`,
+        temp: Math.round(data.hourly.temperature_2m[i]),
+        code: data.hourly.weather_code[i],
+      };
+    });
   }, [data]);
-  
 
   const handleRetry = () => {
     setError(null);
     setIsLoading(true);
     setSpecial((prev) => prev + 1);
-  }
- 
-  if (error === NETWORK_ERROR_MSG || error === LOCATION_ERROR_MSG
- ) {
-  return (
-    <div className="bg-neutral-900 text-neutral-0 px-6 pb-12 font-sans overflow-x-hidden min-h-screen">
-      <div className="max-w-6xl mx-auto">
-        <Header/>
-        <ApiError onRetry={handleRetry}/>
-      </div>
-    </div>
-   
-  );
-}
+  };
 
+  if (error === NETWORK_ERROR_MSG || error === LOCATION_ERROR_MSG) {
+    return (
+      <div className="bg-neutral-900 text-neutral-0 px-6 pb-12 font-sans overflow-x-hidden min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <Header />
+          <ApiError onRetry={handleRetry} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-neutral-900 text-neutral-0 px-6 pb-12 font-sans overflow-x-hidden min-h-screen">
       <div className="max-w-6xl mx-auto">
         <Header />
-        <SearchSection InputValue={currentInputText} Setter={setCurrentText} HandleSearch={handleSearch} />
+        <SearchSection
+          InputValue={currentInputText}
+          Setter={setCurrentText}
+          HandleSearch={handleSearch}
+        />
 
         <div className="mt-6">
           {/* 1. SKELETON SCREEN IS NOW RENDERED HERE */}
           {isLoading && <WeatherSkeleton />}
 
           {!isLoading && error === NO_RESULTS_MSG && (
-            <p className="text-neutral-0 text-lg font-bold text-center">No search results found</p>
+            <p className="text-neutral-0 text-lg font-bold text-center">
+              No search results found
+            </p>
           )}
 
           {/* 2.Generic error state */}
-            {!isLoading && error && error !== NO_RESULTS_MSG && (
+          {!isLoading && error && error !== NO_RESULTS_MSG && (
             <div className="text-center">
               <p className="text-red-400 text-lg font-bold">{error}</p>
               <button
@@ -151,7 +155,7 @@ function App() {
               </button>
             </div>
           )}
-          
+
           {/*3. SUCCESS DATA STATE */}
           {!isLoading && !error && data && (
             <main className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 max-w-6xl mx-auto">
@@ -173,7 +177,10 @@ function App() {
               </div>
 
               <div className="w-full lg:w-90 mx-auto">
-                <HourlyForecast ForeCast={hourly} Today={formattedDate.split(",")[0]} />
+                <HourlyForecast
+                  ForeCast={hourly}
+                  Today={formattedDate.split(",")[0]}
+                />
               </div>
             </main>
           )}

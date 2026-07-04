@@ -9,4 +9,5 @@ export default defineConfig({
     react(), tailwindcss(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  base: '/Weather-App-Front-end-mentor/',
 })

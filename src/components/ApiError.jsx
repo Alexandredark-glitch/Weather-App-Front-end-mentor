@@ -1,5 +1,5 @@
-import RestrictedIcon from "../../assets/images/icon-error.svg";
-import RetryIcon from "../../assets/images/icon-retry.svg";
+import RestrictedIcon from "../assets/images/icon-error.svg";
+import RetryIcon from "../assets/images/icon-retry.svg";
 export default function ApiError({onRetry} ) {
   return (
       <div className="flex flex-col gap-4 items-center">

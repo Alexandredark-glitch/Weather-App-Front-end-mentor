@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { getWeatherIcon } from "../Services/weatherCodes"
-import dropdownIcon from '../../assets/images/icon-dropdown.svg';
+import dropdownIcon from '../assets/images/icon-dropdown.svg';
 
 export default function HourlyForecast({ForeCast, Today}) {
   const [isDaySelectOpen, setIsDaySelectOpen] = useState(false);

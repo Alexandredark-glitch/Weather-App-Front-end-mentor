@@ -1,5 +1,5 @@
 
-import dropdownIcon from '../../assets/images/icon-dropdown.svg';
+import dropdownIcon from '../assets/images/icon-dropdown.svg';
 export default function WeatherSkeleton() {
   const details = ["Feels Like", "Humidity", "Wind", "Precipitation"];
 
